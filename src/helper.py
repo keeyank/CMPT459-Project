@@ -20,13 +20,18 @@ def to_outcome_group(outcome):
     elif outcome in r: 
         return 'recovered'
 
-cases_train = pd.read_csv('./data/cases_2021_train.csv')
+cases_train = pd.read_csv('../data/cases_2021_train.csv')
 outcomes = cases_train['outcome']
 
 outcome_groups = outcomes.map(to_outcome_group)
 
 cases_train['outcome_group'] = outcome_groups
 
-cases_train.to_csv('./data/cases_2021_train_processed.csv')
+cases_train.to_csv('../data/cases_2021_train_processed.csv')
+
+#1.6
+loc_train = pd.read_csv('../data/location_2021.csv')
+loc_train['Country_Region'].replace({'Korea, South': 'South Korea', 'US': 'United States'})
+loc_train.to_csv('../data/temp.csv')
 
 #print(cases_train['outcome_group'])
