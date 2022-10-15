@@ -20,18 +20,23 @@ def to_outcome_group(outcome):
     elif outcome in r: 
         return 'recovered'
 
-cases_train = pd.read_csv('../data/cases_2021_train.csv')
-outcomes = cases_train['outcome']
+def clean_age_column(age):
+    age = str(age)
+    if not age.isdigit():
+        x = age.split('-')
+        y = age.split('.')
+        #? '10-12', '0.75'
+        if len(x) == 2:
+            # '10-12'
+            l, r = x
+            # R could be '' empty in cases like 45-
+            if r == '':
+                d = int(l)
+                return d
+            d = (int(l) + int(r))//2
+        if len(y) == 2:
+            # '0.75'
+            d = round(float(age))
+        return d
+    return int(age)
 
-outcome_groups = outcomes.map(to_outcome_group)
-
-cases_train['outcome_group'] = outcome_groups
-
-cases_train.to_csv('../data/cases_2021_train_processed.csv')
-
-#1.6
-loc_train = pd.read_csv('../data/location_2021.csv')
-loc_train['Country_Region'].replace({'Korea, South': 'South Korea', 'US': 'United States'})
-loc_train.to_csv('../data/temp.csv')
-
-#print(cases_train['outcome_group'])
